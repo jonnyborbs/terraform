@@ -5,6 +5,7 @@ variable "server_port" {
 
 output "elb_dns_name" {
   value = "${aws_elb.example.dns_name}"
+}
 
 output "url" {
   value = "http://${aws_elb.example.dns_name}:${var.server_port}"
@@ -51,8 +52,8 @@ resource "aws_autoscaling_group" "example" {
   load_balancers       = ["${aws_elb.example.name}"]
   health_check_type    = "ELB"
 
-  min_size             = 2
-  max_size             = 10
+  min_size = 2
+  max_size = 10
 
   tag {
     key                 = "Name"
