@@ -3,12 +3,17 @@ variable "server_port" {
   default     = 8080
 }
 
+variable "lb_outside_port" {
+  description = "The port that the load balancer will expose outside"
+  default     = 80
+}
+
 output "elb_dns_name" {
   value = "${aws_elb.example.dns_name}"
 }
 
 output "url" {
-  value = "http://${aws_elb.example.dns_name}:${var.server_port}"
+  value = "http://${aws_elb.example.dns_name}:${var.lb_outside_port}"
 }
 
 provider "aws" {
@@ -68,7 +73,7 @@ resource "aws_elb" "example" {
   security_groups    = ["${aws_security_group.elb.id}"]
 
   listener {
-    lb_port           = 80
+    lb_port           = "${var.lb_outside_port}"
     lb_protocol       = "http"
     instance_port     = "${var.server_port}"
     instance_protocol = "http"
@@ -87,8 +92,8 @@ resource "aws_security_group" "elb" {
   name = "terraform-example-elb"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = "${var.lb_outside_port}"
+    to_port     = "${var.lb_outside_port}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
