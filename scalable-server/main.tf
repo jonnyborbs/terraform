@@ -3,12 +3,11 @@ variable "server_port" {
   default     = 8080
 }
 
-output "public_ip" {
-  value = "${aws_instance.example.public_ip}"
-}
+output "elb_dns_name" {
+  value = "${aws_elb.example.dns_name}"
 
 output "url" {
-  value = "http://${aws_instance.example.public_ip}:${var.server_port}"
+  value = "http://${aws_elb.example.dns_name}:${var.server_port}"
 }
 
 provider "aws" {
@@ -51,6 +50,7 @@ resource "aws_autoscaling_group" "example" {
   availability_zones   = ["${data.aws_availability_zones.all.names}"]
   load_balancers       = ["${aws_elb.example.name}"]
   health_check_type    = "ELB"
+
   min_size             = 2
   max_size             = 10
 
