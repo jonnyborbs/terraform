@@ -11,6 +11,18 @@ terraform {
   }
 }
 
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "jms-terraform-shared-state"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_launch_configuration" "example" {
   image_id        = "ami-40d28157"
   instance_type   = "t2.micro"
