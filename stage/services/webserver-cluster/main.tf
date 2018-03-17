@@ -18,7 +18,9 @@ resource "aws_launch_configuration" "example" {
 
   user_data = <<-EOF
                     #!/bin/bash
-                    echo "Hello, World" > index.html
+                    echo "Hello, World" >> index.html
+                    echo "${data.terraform_remote_state.db.address}" >> index.html
+                    echo "${data.terraform_remote_state.db.port}" >> index.html
                     nohup busybox httpd -f -p "${var.server_port}" &
                     EOF
 
@@ -98,3 +100,14 @@ resource "aws_security_group" "elb" {
 }
 
 data "aws_availability_zones" "all" {}
+
+data "terraform_remote_state" "db" {
+  backend = "s3"
+
+  config {
+    bucket  = "jms-terraform-shared-state"
+    key     = "stage/data-stores/mysql/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = "true"
+  }
+}
