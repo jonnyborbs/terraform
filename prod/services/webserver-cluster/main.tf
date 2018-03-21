@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket  = "jms-terraform-shared-state"
-    key     = "stage/services/webserver-cluster/terraform.tfstate"
+    key     = "prod/services/webserver-cluster/terraform.tfstate"
     region  = "us-east-1"
     encrypt = "true"
   }
