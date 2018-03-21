@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket  = "jms-terraform-shared-state"
-    key     = "stage/data-stores/mysql/terraform.tfstate"
+    key     = "prod/data-stores/mysql/terraform.tfstate"
     region  = "us-east-1"
     encrypt = "true"
   }
@@ -14,5 +14,5 @@ terraform {
 module "rds_instance" {
   source = "../../../modules/data-stores/mysql"
 
-  rds_instance_name = "mysql-stage"
+  rds_instance_name = "mysql-prod"
 }
