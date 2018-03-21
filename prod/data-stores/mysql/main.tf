@@ -14,5 +14,7 @@ terraform {
 module "rds_instance" {
   source = "../../../modules/data-stores/mysql"
 
-  rds_instance_name = "mysql-prod"
+  rds_instance_name = "mysqlprod"
+  rds_db_name       = "mysqlprod"
+  db_password       = "VMware1!"
 }
