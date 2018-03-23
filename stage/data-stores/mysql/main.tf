@@ -18,3 +18,11 @@ module "rds_instance" {
   rds_db_name       = "mysqlstage"
   db_password       = "VMware1!"
 }
+
+output "address" {
+  value = "${module.rds_instance.address}"
+}
+
+output "port" {
+  value = "${module.rds_instance.port}"
+}
